@@ -7,7 +7,18 @@ export default function Login(props){
 
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(userNameRef, passwordRef);
+        console.log(userNameRef.current.value, passwordRef.current.value);
+        axios.post('http://localhost:5000/api/login', {
+            username: userNameRef.current.value,
+            password: passwordRef.current.value
+        })
+        .then(res => {
+            console.log(res);
+            localStorage.setItem('token', res.data.payload)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }
 
     return(
