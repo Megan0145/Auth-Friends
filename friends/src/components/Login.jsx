@@ -1,5 +1,12 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
+import Loader from "react-loader-spinner";
+import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+
+const Loading = () => {
+  const { promiseInProgress } = usePromiseTracker();
+  return promiseInProgress && <Loader type="ThreeDots" color="#2BAD60" />;
+};
 
 export default function Login(props) {
   const userNameRef = useRef(null);
@@ -7,19 +14,20 @@ export default function Login(props) {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log(userNameRef.current.value, passwordRef.current.value);
-    axios
-      .post("http://localhost:5000/api/login", {
-        username: userNameRef.current.value,
-        password: passwordRef.current.value
-      })
-      .then(res => {
-        localStorage.setItem("token", res.data.payload);
-        props.history.push('/friends');
-      })
-      .catch(err => {
-        alert(err.response.data.error);
-      });
+    trackPromise(
+      axios
+        .post("http://localhost:5000/api/login", {
+          username: userNameRef.current.value,
+          password: passwordRef.current.value
+        })
+        .then(res => {
+          localStorage.setItem("token", res.data.payload);
+          props.history.push("/friends");
+        })
+        .catch(err => {
+          alert(err.response.data.error);
+        })
+    );
   };
 
   return (
@@ -28,6 +36,9 @@ export default function Login(props) {
         <input ref={userNameRef} placeholder="Username" type="text" />
         <input ref={passwordRef} placeholder="Password" type="text" />
         <button onClick={onSubmit}>Submit</button>
+        <div>
+          <Loading />
+        </div>
       </form>
     </div>
   );
