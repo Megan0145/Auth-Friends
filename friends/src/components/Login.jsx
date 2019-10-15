@@ -15,6 +15,7 @@ export default function Login(props) {
       })
       .then(res => {
         localStorage.setItem("token", res.data.payload);
+        props.history.push('/friends');
       })
       .catch(err => {
         alert(err.response.data.error);
