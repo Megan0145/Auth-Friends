@@ -5,7 +5,7 @@ export default function withAuth() {
 
   return axios.create({
     headers: {
-      "Content-Type": "apllication/json",
+      "Content-Type": "application/json",
       Authorization: token
     }
   });
