@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import withAuth from "../axios";
 import Loader from "react-loader-spinner";
 import { usePromiseTracker, trackPromise } from "react-promise-tracker";
+import { finished } from "stream";
 
 const Loading = () => {
   const { promiseInProgress } = usePromiseTracker();
@@ -26,6 +27,18 @@ export default function Friends(props) {
     );
   }, []);
 
+  const deleteFriend = (id) => {
+    //   setFriends(friends.filter(friend => friend.id != id))
+    withAuth().delete(`http://localhost:5000/api/friends/${id}`)
+    .then(res => {
+        console.log('success', res)
+        setFriends(res.data)
+    })
+    .catch(err => {
+        console.log('boo', err)
+    })
+  }
+
   return (
     <div>
       <Loading />
@@ -35,6 +48,7 @@ export default function Friends(props) {
             <h3>Name:{friend.name}</h3>
             <p>Age:{friend.age}</p>
             <p>Email:{friend.email}</p>
+            <button onClick={() => deleteFriend(friend.id)}>Delete Friend</button>
           </div>
         );
       })}
