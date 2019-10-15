@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "./Login";
 import Friends from "./Friends";
 import AddFriend from "./AddFriend";
@@ -14,7 +14,11 @@ export function Container(props) {
       </nav>
       <main>
         <Route exact path="/" component={Login} />
-        <Route exact path="/add_friend" render={props => withAuthCheck(AddFriend, props)} />
+        <Route
+          exact
+          path="/add_friend"
+          render={props => withAuthCheck(AddFriend, props)}
+        />
         <Route
           exact
           path="/friends"
@@ -24,7 +28,6 @@ export function Container(props) {
     </div>
   );
 }
-
 function withAuthCheck(Component, props) {
   return localStorage.getItem("token") ? (
     <Component {...props} />

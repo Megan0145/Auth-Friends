@@ -9,6 +9,7 @@ const Loading = () => {
 };
 
 export default function Friends(props) {
+  
   const [friends, setFriends] = useState([]);
 
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function Friends(props) {
         .get("http://localhost:5000/api/friends")
         .then(res => {
           setFriends(res.data);
+        console.log(res)
         })
         .catch(err => {
           alert(err.response.data.error);
