@@ -7,7 +7,7 @@ export default function Container(props){
     return(
         <div>
             <nav>
-                <Link exact to='/'>Home</Link>
+                <Link to='/'>Home</Link>
                 <Link to='/friends'>Friends</Link>
             </nav>
            <main>
